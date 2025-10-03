@@ -21,7 +21,7 @@ router.get('/categories', getCategories);
 router.get('/search/:query', searchProducts);
 router.get('/featured', getFeaturedProducts);
 router.get('/category/:category', getProductsByCategory);
-//router.get('/:id', getProduct);
+router.get('/:id', getProduct);
 
 // Admin routes
 router.post('/', adminProtect, uploadProductImages, createProduct);

@@ -40,6 +40,7 @@ export default function ProductDetailPage() {
   const [isInWishlist, setIsInWishlist] = useState(false);
 
   useEffect(() => {
+    console.log('🎯 Product ID from URL:', id);
     if (id) {
       loadProduct();
       checkWishlist();
@@ -53,22 +54,36 @@ export default function ProductDetailPage() {
     try {
       setLoading(true);
       setError('');
-      console.log('Loading product with ID:', id);
+      console.log('🔄 Loading product with ID:', id);
       
       const response = await getProduct(id);
-      console.log('Product response:', response);
+      console.log('📦 Product API response:', response);
       
       // Handle different response structures
-      const productData = response.product || response.data || response;
+      let productData;
       
-      if (productData) {
+      if (response && response.product) {
+        productData = response.product;
+      } else if (response && response.data) {
+        productData = response.data.product || response.data;
+      } else if (response && response._id) {
+        productData = response; // Direct product object
+      } else {
+        console.error('Unexpected response format:', response);
+        setError('Product not found in response');
+        return;
+      }
+      
+      console.log('Processed product data:', productData);
+      
+      if (productData && productData._id) {
         setProduct(productData);
       } else {
-        setError('Product not found in response');
+        setError('Invalid product data received');
       }
     } catch (err) {
-      console.error('Error loading product:', err);
-      setError('Product not found or failed to load');
+      console.error('❌ Error loading product:', err);
+      setError('Product not found or failed to load: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -141,16 +156,24 @@ export default function ProductDetailPage() {
         <Alert severity="error" sx={{ mb: 2 }}>
           {error || 'Product not found'}
         </Alert>
-        <Button 
-          onClick={() => navigate('/products')} 
-          variant="contained"
-          sx={{
-            bgcolor: '#7a3cff',
-            '&:hover': { bgcolor: '#692fd9' }
-          }}
-        >
-          Back to Products
-        </Button>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button 
+            onClick={loadProduct} 
+            variant="contained"
+            sx={{
+              bgcolor: '#7a3cff',
+              '&:hover': { bgcolor: '#692fd9' }
+            }}
+          >
+            Retry Loading
+          </Button>
+          <Button 
+            onClick={() => navigate('/products')} 
+            variant="outlined"
+          >
+            Back to Products
+          </Button>
+        </Box>
       </Container>
     );
   }
@@ -168,39 +191,83 @@ export default function ProductDetailPage() {
       <Grid container spacing={4}>
         {/* Product Images */}
         <Grid item xs={12} md={6}>
-          <Card sx={{ mb: 2 }}>
-            <CardMedia
-              component="img"
-              height="400"
-              image={product.images?.[selectedImage]?.url || '/placeholder-image.jpg'}
-              alt={product.name}
-              sx={{ objectFit: 'cover' }}
-            />
-          </Card>
-          {product.images && product.images.length > 1 && (
-            <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto' }}>
-              {product.images.map((image, index) => (
-                <Card 
-                  key={index}
-                  sx={{ 
-                    minWidth: 80, 
-                    cursor: 'pointer',
-                    border: selectedImage === index ? '2px solid' : '1px solid',
-                    borderColor: selectedImage === index ? 'primary.main' : 'grey.300'
-                  }}
-                  onClick={() => setSelectedImage(index)}
-                >
-                  <CardMedia
-                    component="img"
-                    height="80"
-                    image={image.url}
-                    alt={`${product.name} ${index + 1}`}
-                    sx={{ objectFit: 'cover' }}
-                  />
-                </Card>
-              ))}
-            </Box>
-          )}
+          <Box>
+            {/* Main Image */}
+            <Card 
+              sx={{ 
+                mb: 2,
+                height: { xs: '280px', sm: '320px', md: '340px' },
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+                backgroundColor: '#fafafa'
+              }}
+            >
+              <CardMedia
+                component="img"
+                image={product.images?.[selectedImage]?.url || '/placeholder-image.jpg'}
+                alt={product.name}
+                sx={{ 
+                  objectFit: 'contain',
+                  width: 'auto',
+                  maxWidth: '100%',
+                  height: 'auto',
+                  maxHeight: '100%'
+                }}
+              />
+            </Card>
+            
+            {/* Thumbnail Gallery - Compact and aligned */}
+            {product.images && product.images.length > 1 && (
+              <Box 
+                sx={{ 
+                  display: 'flex', 
+                  gap: 1, 
+                  overflowX: 'auto',
+                  py: 0.5,
+                  maxHeight: '70px',
+                  alignItems: 'center'
+                }}
+              >
+                {product.images.map((image, index) => (
+                  <Card 
+                    key={index}
+                    sx={{ 
+                      minWidth: 60, // Compact thumbnails
+                      height: 60,
+                      cursor: 'pointer',
+                      border: selectedImage === index ? '2px solid' : '1px solid',
+                      borderColor: selectedImage === index ? 'primary.main' : 'grey.200',
+                      borderRadius: 1,
+                      flexShrink: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      overflow: 'hidden',
+                      transition: 'all 0.2s ease',
+                      '&:hover': {
+                        borderColor: 'primary.light',
+                        transform: 'scale(1.05)'
+                      }
+                    }}
+                    onClick={() => setSelectedImage(index)}
+                  >
+                    <CardMedia
+                      component="img"
+                      image={image.url}
+                      alt={`${product.name} ${index + 1}`}
+                      sx={{ 
+                        objectFit: 'cover',
+                        width: '100%',
+                        height: '100%'
+                      }}
+                    />
+                  </Card>
+                ))}
+              </Box>
+            )}
+          </Box>
         </Grid>
 
         {/* Product Details */}

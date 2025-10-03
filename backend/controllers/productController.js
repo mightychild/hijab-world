@@ -7,35 +7,35 @@ const { uploadToCloudinary } = require('../config/cloudinary');
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
   try {
-    console.log('=== 🎯 PRODUCT CREATION REQUEST DIAGNOSTICS ===');
-    console.log('📋 Request Details:');
+    console.log('===PRODUCT CREATION REQUEST DIAGNOSTICS ===');
+    console.log('Request Details:');
     console.log('  - URL:', req.originalUrl);
     console.log('  - Method:', req.method);
     console.log('  - Content-Type:', req.headers['content-type']);
     console.log('  - Authorization:', req.headers.authorization ? 'Present' : 'Missing');
     
-    console.log('📦 Request Body Analysis:');
+    console.log('Request Body Analysis:');
     console.log('  - Body keys:', Object.keys(req.body));
     
-    console.log('🖼️ Files Analysis:');
+    console.log('Files Analysis:');
     console.log('  - Files count:', req.files ? req.files.length : 0);
     
-    console.log('👤 User Info:');
+    console.log('User Info:');
     console.log('  - User ID:', req.user?._id);
     console.log('  - Is Admin:', req.user?.isAdmin);
 
     // Check if we have any data at all
     if (!req.body || Object.keys(req.body).length === 0) {
-      console.log('❌ CRITICAL: No form data received in req.body');
+      console.log('CRITICAL: No form data received in req.body');
       return res.status(400).json({
         success: false,
         message: 'No form data received. The form might not be sending data correctly.',
       });
     }
 
-    // SIMPLE VALIDATION - Check required fields directly from req.body
+    // Check required fields directly from req.body
     if (!req.body.name || !req.body.price || !req.body.category) {
-      console.log('❌ Validation failed - missing required fields in req.body');
+      console.log('Validation failed - missing required fields in req.body');
       return res.status(400).json({
         success: false,
         message: 'Name, price, and category are required',
@@ -46,16 +46,16 @@ const createProduct = asyncHandler(async (req, res) => {
     
     // Handle image upload if files exist - USING CLOUDINARY
     if (req.files && req.files.length > 0) {
-      console.log('🖼️ Processing images with Cloudinary...');
+      console.log('Processing images with Cloudinary...');
       console.log('Number of files:', req.files.length);
       
       try {
         const uploadPromises = req.files.map(async (file, index) => {
-          console.log(`📤 Uploading image ${index + 1} to Cloudinary:`, file.originalname);
+          console.log(`Uploading image ${index + 1} to Cloudinary:`, file.originalname);
           
           try {
             const result = await uploadToCloudinary(file.buffer);
-            console.log(`✅ Image ${index + 1} uploaded successfully:`, result.secure_url);
+            console.log(`Image ${index + 1} uploaded successfully:`, result.secure_url);
             
             return {
               public_id: result.public_id,
@@ -63,24 +63,24 @@ const createProduct = asyncHandler(async (req, res) => {
               alt: req.body.name || `Product image ${index + 1}`
             };
           } catch (uploadError) {
-            console.error(`❌ Failed to upload image ${index + 1}:`, uploadError);
+            console.error(`Failed to upload image ${index + 1}:`, uploadError);
             throw uploadError;
           }
         });
 
         // Wait for all uploads to complete
         images = await Promise.all(uploadPromises);
-        console.log('✅ All images processed successfully:', images.length);
+        console.log('All images processed successfully:', images.length);
         
       } catch (uploadError) {
-        console.error('❌ Cloudinary upload failed:', uploadError);
+        console.error('Cloudinary upload failed:', uploadError);
         return res.status(500).json({
           success: false,
           message: 'Failed to upload product images. Please try again.',
         });
       }
     } else {
-      console.log('⚠️  No images provided for product');
+      console.log('No images provided for product');
       return res.status(400).json({
         success: false,
         message: 'At least one product image is required',
@@ -129,7 +129,7 @@ const createProduct = asyncHandler(async (req, res) => {
       }
     }
 
-    console.log('📊 Final product data to save:');
+    console.log('Final product data to save:');
     console.log('- Name:', productData.name);
     console.log('- Price:', productData.price);
     console.log('- Category:', productData.category);
@@ -146,11 +146,11 @@ const createProduct = asyncHandler(async (req, res) => {
     }
 
     // Create and save product
-    console.log('💾 Saving product to database...');
+    console.log('Saving product to database...');
     const product = new Product(productData);
     const savedProduct = await product.save();
     
-    console.log('✅ Product created successfully! ID:', savedProduct._id);
+    console.log('Product created successfully! ID:', savedProduct._id);
     console.log('=== PRODUCT CREATION COMPLETE ===');
 
     res.status(201).json({
@@ -160,7 +160,7 @@ const createProduct = asyncHandler(async (req, res) => {
     });
 
   } catch (error) {
-    console.error('❌ Product creation error:', error);
+    console.error('Product creation error:', error);
     
     // Specific error handling for Cloudinary
     if (error.message.includes('Cloudinary') || error.message.includes('upload')) {
@@ -188,7 +188,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 
     // If images are being updated, handle Cloudinary upload
     if (req.files && req.files.length > 0) {
-      console.log('🖼️ Processing updated images with Cloudinary...');
+      console.log('Processing updated images with Cloudinary...');
       
       const uploadPromises = req.files.map(async (file) => {
         const result = await uploadToCloudinary(file.buffer);
@@ -226,6 +226,54 @@ const updateProduct = asyncHandler(async (req, res) => {
     res.status(400).json({
       success: false,
       message: 'Error updating product',
+      error: error.message
+    });
+  }
+});
+
+const getProduct = asyncHandler(async (req, res) => {
+  try {
+    const productId = req.params.id;
+    console.log('Fetching single product:', productId);
+    
+    // Basic validation
+    if (!productId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Product ID is required'
+      });
+    }
+
+    const product = await Product.findById(productId);
+    
+    if (!product) {
+      console.log('Product not found:', productId);
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found'
+      });
+    }
+    
+    console.log('Product found:', product.name);
+    
+    res.json({
+      success: true,
+      data: product
+    });
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    
+    // Handle invalid ObjectId
+    if (error.name === 'CastError') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid product ID format'
+      });
+    }
+    
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching product',
       error: error.message
     });
   }
@@ -424,6 +472,7 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
 // Export all functions
 module.exports = {
   createProduct,
+  getProduct,
   getProducts,
   getCategories,
   searchProducts,
