@@ -311,10 +311,6 @@ export default function Layout({ children }) {
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 1 }}>
-            {/* <IconButton color="inherit"><Search /></IconButton>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="error"><Notifications /></Badge>
-            </IconButton> */}
             <IconButton color="inherit" onClick={() => navigate('/cart')}>
               <Badge badgeContent={cartItems.length} color="error">
                 <ShoppingCart />
@@ -329,7 +325,7 @@ export default function Layout({ children }) {
         </Toolbar>
       </AppBar>
 
-      {/* Mobile Sidebar (temporary) */}
+      {/* Mobile Sidebar */}
       <Drawer
         variant="temporary"
         open={mobileSidebarOpen}
@@ -350,7 +346,7 @@ export default function Layout({ children }) {
         <SidebarContent />
       </Drawer>
 
-      {/* Desktop Sidebar (permanent) */}
+      {/* Desktop Sidebar */}
       <Box
         sx={{
           gridColumn: '1 / 2',
@@ -369,7 +365,7 @@ export default function Layout({ children }) {
         <SidebarContent />
       </Box>
 
-      {/* Main Content - FIXED with Grid */}
+      {/* Main Content */}
       <Box
         component="main"
         sx={{

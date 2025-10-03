@@ -71,9 +71,6 @@ export default function Header({ onMenuClick }) {
 
         {/* Action Buttons */}
         <Box sx={{ display: 'flex', gap: 1 }}>
-          {/* <IconButton color="inherit" size="medium"> */}
-            {/* <Search />
-          </IconButton> */}
           
           <IconButton 
             color="inherit" 

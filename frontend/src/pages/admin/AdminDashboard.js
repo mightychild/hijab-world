@@ -20,7 +20,7 @@ import {
 import {
   People as PeopleIcon,
   ShoppingCart as OrdersIcon,
-  Inventory as ProductsIcon, // ADD THIS IMPORT
+  Inventory as ProductsIcon,
   AttachMoney as SalesIcon,
   Dashboard as DashboardIcon,
 } from '@mui/icons-material';

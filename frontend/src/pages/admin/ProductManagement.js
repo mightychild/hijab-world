@@ -1,4 +1,4 @@
-// components/admin/ProductManagement.js
+
 import React, { useState, useEffect } from 'react';
 import {
   Box,

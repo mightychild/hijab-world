@@ -193,7 +193,7 @@ export default function AdminLayout({ children }) {
           backgroundColor: '#f5f5f5'
         }}
       >
-        <Toolbar /> {/* Spacer for the AppBar */}
+        <Toolbar />
         {children}
       </Box>
     </Box>

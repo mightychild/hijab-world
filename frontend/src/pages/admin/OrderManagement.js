@@ -1,4 +1,4 @@
-// components/admin/OrderManagement.js
+
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -82,19 +82,19 @@ export default function OrderManagement() {
     try {
       setLoading(true);
       setError('');
-      console.log('🔄 Fetching orders...');
+      console.log('Fetching orders...');
       
       const ordersData = await getOrders();
-      console.log('📦 Orders data received:', ordersData);
+      console.log('Orders data received:', ordersData);
       
       // Ensure orders is always an array
       const safeOrders = Array.isArray(ordersData) ? ordersData : [];
       setOrders(safeOrders);
       
-      console.log('✅ Orders set:', safeOrders.length, 'orders');
+      console.log('Orders set:', safeOrders.length, 'orders');
       
     } catch (err) {
-      console.error('❌ Error fetching orders:', err);
+      console.error('Error fetching orders:', err);
       setError(err.message || 'Failed to load orders');
       setOrders([]); // Set empty array on error
     } finally {

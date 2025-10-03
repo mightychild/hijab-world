@@ -35,7 +35,6 @@ export default function AnalyticsDashboard() {
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
-      // You'll need to create these API functions in adminService.js
       const salesResponse = await fetch(`/api/admin/analytics/sales?period=${period}`);
       const customersResponse = await fetch('/api/admin/analytics/customers');
       
