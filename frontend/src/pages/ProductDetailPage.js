@@ -40,7 +40,7 @@ export default function ProductDetailPage() {
   const [isInWishlist, setIsInWishlist] = useState(false);
 
   useEffect(() => {
-    console.log('🎯 Product ID from URL:', id);
+    console.log('Product ID from URL:', id);
     if (id) {
       loadProduct();
       checkWishlist();
@@ -54,10 +54,10 @@ export default function ProductDetailPage() {
     try {
       setLoading(true);
       setError('');
-      console.log('🔄 Loading product with ID:', id);
+      console.log('Loading product with ID:', id);
       
       const response = await getProduct(id);
-      console.log('📦 Product API response:', response);
+      console.log('Product API response:', response);
       
       // Handle different response structures
       let productData;
@@ -67,7 +67,7 @@ export default function ProductDetailPage() {
       } else if (response && response.data) {
         productData = response.data.product || response.data;
       } else if (response && response._id) {
-        productData = response; // Direct product object
+        productData = response;
       } else {
         console.error('Unexpected response format:', response);
         setError('Product not found in response');
@@ -82,7 +82,7 @@ export default function ProductDetailPage() {
         setError('Invalid product data received');
       }
     } catch (err) {
-      console.error('❌ Error loading product:', err);
+      console.error('Error loading product:', err);
       setError('Product not found or failed to load: ' + err.message);
     } finally {
       setLoading(false);
@@ -218,7 +218,7 @@ export default function ProductDetailPage() {
               />
             </Card>
             
-            {/* Thumbnail Gallery - Compact and aligned */}
+            {/* Thumbnail Gallery */}
             {product.images && product.images.length > 1 && (
               <Box 
                 sx={{ 
@@ -234,7 +234,7 @@ export default function ProductDetailPage() {
                   <Card 
                     key={index}
                     sx={{ 
-                      minWidth: 60, // Compact thumbnails
+                      minWidth: 60,
                       height: 60,
                       cursor: 'pointer',
                       border: selectedImage === index ? '2px solid' : '1px solid',

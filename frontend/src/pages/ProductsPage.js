@@ -75,7 +75,7 @@ export default function ProductsPage() {
       setLoading(true);
       setError('');
       
-      console.log('🔄 Fetching products...');
+      console.log('Fetching products...');
       
       // Create filters object from your state variables
       const filters = {
@@ -91,10 +91,10 @@ export default function ProductsPage() {
         sortOrder: 'desc'
       };
       
-      console.log('📋 Filters:', filters);
+      console.log('Filters:', filters);
       
       const response = await getProducts(filters);
-      console.log('📦 Products API response:', response);
+      console.log('Products API response:', response);
       
       // Handle different response formats
       let productsData = [];
@@ -108,7 +108,7 @@ export default function ProductsPage() {
       } else if (response && response.data && response.data.products && Array.isArray(response.data.products)) {
         productsData = response.data.products;
       } else {
-        console.warn('⚠️ Unexpected products response format:', response);
+        console.warn('Unexpected products response format:', response);
         productsData = [];
       }
       
@@ -125,7 +125,7 @@ export default function ProductsPage() {
       }
       
     } catch (err) {
-      console.error('❌ Error fetching products:', err);
+      console.error('Error fetching products:', err);
       setError('Failed to load products: ' + err.message);
       setProducts([]);
     } finally {
@@ -135,12 +135,12 @@ export default function ProductsPage() {
 
   const fetchCategories = async () => {
     try {
-      console.log('🔄 Fetching categories...');
+      console.log('Fetching categories...');
       let categoriesData;
       
       try {
         const response = await getProductCategories();
-        console.log('📦 Categories API response:', response);
+        console.log('Categories API response:', response);
         
         // Try multiple response formats
         if (Array.isArray(response)) {
@@ -153,7 +153,7 @@ export default function ProductsPage() {
           throw new Error('Unexpected response format');
         }
       } catch (apiError) {
-        console.warn('⚠️ Categories API failed, using fallback');
+        console.warn('Categories API failed, using fallback');
         // Use hardcoded fallback categories
         categoriesData = ['hijab', 'abaya', 'jalabiya', 'accessory'];
       }
@@ -163,11 +163,11 @@ export default function ProductsPage() {
         ? categoriesData.filter(cat => cat && typeof cat === 'string')
         : ['hijab', 'abaya', 'jalabiya', 'accessory'];
       
-      console.log('✅ Final categories:', safeCategories);
+      console.log('Final categories:', safeCategories);
       setCategories(safeCategories);
       
     } catch (err) {
-      console.error('❌ Failed to load categories:', err);
+      console.error('Failed to load categories:', err);
       // Ultimate fallback
       setCategories(['hijab', 'abaya', 'jalabiya', 'accessory']);
     }

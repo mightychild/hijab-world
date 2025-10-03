@@ -20,10 +20,10 @@ const uploadToCloudinary = (fileBuffer, folder = 'hijabworld') => {
       },
       (error, result) => {
         if (error) {
-          console.error('❌ Cloudinary upload error:', error);
+          console.error('Cloudinary upload error:', error);
           reject(error);
         } else {
-          console.log('✅ Cloudinary upload successful:', result.secure_url);
+          console.log('Cloudinary upload successful:', result.secure_url);
           resolve(result);
         }
       }

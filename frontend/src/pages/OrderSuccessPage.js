@@ -324,10 +324,14 @@ export default function OrderSuccessPage() {
           <Paper sx={{ p: 3, mt: 2, borderRadius: 2, bgcolor: 'grey.50' }}>
             <Typography variant="h6" gutterBottom>Support Information</Typography>
             <Typography variant="body2" sx={{ mb: 1 }}>
-              📧 Email: support@hijabworld.com
+              <a href="mailto:support@hijabworld.com">
+                📧 Email: support@hijabworld.com
+              </a>
             </Typography>
             <Typography variant="body2" sx={{ mb: 1 }}>
-              📞 Phone: +234-XXX-XXXX-XXX
+              <a href="tel:+234-XXX-XXXX-XXX">
+                📞 Phone: +234-XXX-XXXX-XXX
+              </a>
             </Typography>
             <Typography variant="body2">
               ⏰ Hours: Mon-Fri, 9AM-6PM

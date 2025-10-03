@@ -161,30 +161,30 @@ const orderSchema = new mongoose.Schema({
 
 // order number generation
 orderSchema.pre('validate', function(next) {
-  console.log('🔄 Pre-validate hook called');
+  console.log('Pre-validate hook called');
   
   if (!this.orderNumber) {
-    console.log('📝 Generating order number...');
+    console.log('Generating order number...');
     const timestamp = Date.now().toString();
     const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     this.orderNumber = `HW${timestamp.slice(-8)}${random}`;
-    console.log('✅ Generated order number:', this.orderNumber);
+    console.log('Generated order number:', this.orderNumber);
   }
   
   next();
 });
 
 orderSchema.pre('save', function(next) {
-  console.log('🔄 Pre-save hook called');
+  console.log('Pre-save hook called');
   console.log('Current orderNumber:', this.orderNumber);
   
   // Ensure orderNumber exists
   if (!this.orderNumber) {
-    console.log('⚠️  No orderNumber, generating fallback...');
+    console.log('No orderNumber, generating fallback...');
     const timestamp = Date.now().toString();
     const random = Math.floor(Math.random() * 10000);
     this.orderNumber = `HW-FB${timestamp}${random}`;
-    console.log('✅ Fallback order number:', this.orderNumber);
+    console.log('Fallback order number:', this.orderNumber);
   }
 
   // Calculate final amount

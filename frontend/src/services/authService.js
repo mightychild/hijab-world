@@ -1,4 +1,4 @@
-// services/authService.js
+
 import api from './api';
 
 // Export apiRequest for other services to use

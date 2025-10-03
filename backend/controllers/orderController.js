@@ -226,7 +226,7 @@ exports.createOrder = async (req, res) => {
   } catch (error) {
     console.error('Create order error:', error);
     
-    // Enhanced error logging
+    // error logging
     if (error.name === 'ValidationError') {
       console.error('Validation errors details:');
       Object.values(error.errors).forEach(err => {

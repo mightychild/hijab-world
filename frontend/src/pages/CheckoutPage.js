@@ -233,21 +233,6 @@ export default function CheckoutPage() {
         </Alert>
       )}
 
-      {/* Debug info for development */}
-      {/* {process.env.NODE_ENV === 'development' && (
-        <Alert severity="info" sx={{ mb: 2 }}>
-          <Typography variant="body2">
-            API Endpoint: http://localhost:5000/api/orders
-          </Typography>
-          <Typography variant="body2">
-            Cart Items: {cartItems.length}
-          </Typography>
-          <Typography variant="body2">
-            Current Step: {activeStep + 1} of {steps.length}
-          </Typography>
-        </Alert>
-      )} */}
-
       <Grid container spacing={4}>
         <Grid item xs={12} md={8}>
           {getStepContent(activeStep)}

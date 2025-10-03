@@ -1,4 +1,4 @@
-// services/productService.js
+
 import api from './api';
 
 // Get all products with filtering

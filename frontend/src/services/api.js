@@ -1,4 +1,4 @@
-// services/api.js
+
 import axios from 'axios';
 
 // Use the correct base URL with /api
@@ -27,12 +27,12 @@ api.interceptors.request.use(
       config.data = JSON.stringify(config.data);
     }
     
-    console.log(`🚀 Making ${config.method?.toUpperCase()} request to: ${config.baseURL}${config.url}`);
-    console.log('📦 Request data:', config.data);
+    console.log(`Making ${config.method?.toUpperCase()} request to: ${config.baseURL}${config.url}`);
+    console.log('Request data:', config.data);
     return config;
   },
   (error) => {
-    console.error('❌ Request error:', error);
+    console.error('Request error:', error);
     return Promise.reject(error);
   }
 );
@@ -40,12 +40,12 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
-    console.log(`✅ Response received: ${response.status} ${response.config.url}`);
-    console.log('📊 Response data:', response.data);
+    console.log(`Response received: ${response.status} ${response.config.url}`);
+    console.log('Response data:', response.data);
     return response.data;
   },
   (error) => {
-    console.error('❌ API Error Details:', {
+    console.error('API Error Details:', {
       url: error.config?.url,
       fullUrl: error.config?.baseURL + error.config?.url,
       status: error.response?.status,
@@ -59,7 +59,7 @@ api.interceptors.response.use(
     }
     
     if (error.response?.status === 404) {
-      console.error('❌ 404 Error - Route not found. Check if the backend route exists.');
+      console.error('404 Error - Route not found. Check if the backend route exists.');
     }
     
     return Promise.reject(error);

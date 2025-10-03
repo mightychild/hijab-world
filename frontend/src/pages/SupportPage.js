@@ -49,7 +49,9 @@ export default function SupportPage() {
                     support@hijabworld.com
                   </Typography>
                   <Button variant="outlined" size="small">
-                    Send Email
+                    <a href="mailto:support@hijabworld.com">
+                      Send Email
+                    </a>
                   </Button>
                 </Card>
               </Grid>
@@ -64,7 +66,9 @@ export default function SupportPage() {
                     +234-XXX-XXXX-XXX
                   </Typography>
                   <Button variant="outlined" size="small">
-                    Call Now
+                    <a href="tel:+234-XXX-XXXX-XXX">
+                      Call Now
+                    </a>
                   </Button>
                 </Card>
               </Grid>

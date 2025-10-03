@@ -25,7 +25,7 @@ export const addToWishlist = async (productId, size = '', color = '') => {
     });
     return response.data || response;
   } catch (error) {
-    console.error('❌ Error adding to wishlist:', error);
+    console.error('Error adding to wishlist:', error);
     throw error;
   }
 };

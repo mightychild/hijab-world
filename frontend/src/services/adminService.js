@@ -1,4 +1,4 @@
-// services/adminService.js
+
 import api from './api';
 
 // User Management
@@ -136,7 +136,7 @@ export const getAdminProducts = async (filters = {}) => {
   }
 };
 
-// Create Product with proper route and FormData handling
+// Create Product
 export const createProduct = async (formData) => {
   try {
     console.log('Creating product with FormData...');

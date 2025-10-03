@@ -1,4 +1,4 @@
-// services/orderService.js
+
 import { apiRequest } from './authService';
 
 // Get user's orders
