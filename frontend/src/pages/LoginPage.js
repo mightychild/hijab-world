@@ -84,7 +84,7 @@ export default function LoginPage() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed', // Creates parallax effect
+        backgroundAttachment: 'fixed',
         position: 'relative',
         '&::before': {
           content: '""',
